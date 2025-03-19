@@ -31,6 +31,7 @@ interface StatsCardProps extends VariantProps<typeof statsCardVariants> {
   };
   isLoading?: boolean;
   className?: string;
+  style?: React.CSSProperties; // Add the style prop to the interface
 }
 
 export function StatsCard({
@@ -42,10 +43,11 @@ export function StatsCard({
   isLoading = false,
   variant,
   className,
+  style, // Add style to the function parameters
 }: StatsCardProps) {
   if (isLoading) {
     return (
-      <div className={cn(statsCardVariants({ variant }), className)}>
+      <div className={cn(statsCardVariants({ variant }), className)} style={style}>
         <div className="flex items-center justify-between">
           <Skeleton className="h-5 w-24" />
           {icon && <Skeleton className="h-8 w-8 rounded-full" />}
@@ -58,7 +60,7 @@ export function StatsCard({
   }
 
   return (
-    <div className={cn(statsCardVariants({ variant }), className)}>
+    <div className={cn(statsCardVariants({ variant }), className)} style={style}>
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
         {icon && (
