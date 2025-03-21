@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Activity, 
   Box, 
@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useToast } from '@/hooks/use-toast';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -91,9 +92,23 @@ const secondaryNavItems: SidebarNavItem[] = [
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleLogout = () => {
+    // In a real application, you would clear authentication tokens, user data, etc.
+    // For now, we'll just simulate a logout with a success message
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account",
+    });
+    
+    // Redirect to the login page
+    navigate('/login');
   };
 
   return (
@@ -192,7 +207,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             <Button 
               variant="outline" 
               className="w-full justify-start gap-2 text-gray-700 dark:text-gray-300"
-              onClick={() => console.log('Logout')}
+              onClick={handleLogout}
             >
               <LogOut className="h-4 w-4" />
               <span>Logout</span>
