@@ -13,6 +13,7 @@ import Products from "./pages/FE/Products";
 import Cart from "./pages/FE/Cart";
 import Contact from "./pages/FE/Contact";
 import Login from "./pages/FE/Login";
+import Register from "./pages/FE/Register";
 
 // BE (Admin) Pages
 import AdminLogin from "./pages/BE/AdminLogin";
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/cart" element={<Cart />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             
             {/* BE (Admin) routes */}
             <Route path="/admin/login" element={<AdminLogin />} />

@@ -1,24 +1,29 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Pill, Home, Package, ShoppingCart, Phone } from 'lucide-react';
+import { Pill, Home, Package, ShoppingCart, Phone, User, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface UserLayoutProps {
   children: React.ReactNode;
 }
 
 const UserLayout: React.FC<UserLayoutProps> = ({ children }) => {
+  const { isAuthenticated, logout } = useAuth();
+  
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 w-full border-b bg-white dark:bg-gray-950">
+      <header className="sticky top-0 z-40 w-full border-b bg-white/80 backdrop-blur-md dark:bg-gray-950/80">
         <div className="container flex h-16 items-center justify-between py-4">
           <div className="flex items-center gap-2">
-            <span className="h-8 w-8 rounded-md bg-pharma-500 flex items-center justify-center">
-              <Pill className="h-5 w-5 text-white" />
-            </span>
-            <span className="text-xl font-bold">PharmaCare</span>
+            <NavLink to="/" className="flex items-center gap-2">
+              <span className="h-8 w-8 rounded-md bg-pharma-500 flex items-center justify-center">
+                <Pill className="h-5 w-5 text-white" />
+              </span>
+              <span className="text-xl font-bold text-pharma-700 dark:text-pharma-300">PharmaCare</span>
+            </NavLink>
           </div>
           
           <nav className="hidden md:flex items-center gap-6">
@@ -73,12 +78,35 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children }) => {
           </nav>
           
           <div className="flex items-center gap-2">
-            <NavLink to="/admin/login">
-              <Button variant="outline" size="sm">Admin</Button>
-            </NavLink>
-            <NavLink to="/login">
-              <Button size="sm">Login</Button>
-            </NavLink>
+            {isAuthenticated ? (
+              <>
+                <NavLink to="/account">
+                  <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                    <User className="h-4 w-4" />
+                    <span>My Account</span>
+                  </Button>
+                </NavLink>
+                <Button variant="outline" size="sm" onClick={logout} className="flex items-center gap-1">
+                  <LogOut className="h-4 w-4" />
+                  <span>Logout</span>
+                </Button>
+              </>
+            ) : (
+              <>
+                <NavLink to="/register">
+                  <Button variant="outline" size="sm" className="flex items-center gap-1">
+                    <User className="h-4 w-4" />
+                    <span>Register</span>
+                  </Button>
+                </NavLink>
+                <NavLink to="/login">
+                  <Button size="sm" className="bg-pharma-600 hover:bg-pharma-500 flex items-center gap-1">
+                    <LogIn className="h-4 w-4" />
+                    <span>Login</span>
+                  </Button>
+                </NavLink>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -89,17 +117,17 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children }) => {
         </div>
       </main>
       
-      <footer className="border-t bg-slate-50 dark:bg-gray-900">
+      <footer className="border-t bg-slate-50/80 backdrop-blur-md dark:bg-gray-900/80">
         <div className="container py-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-semibold mb-4">PharmaCare</h3>
+              <h3 className="text-lg font-semibold mb-4 text-pharma-700 dark:text-pharma-300">PharmaCare</h3>
               <p className="text-sm text-muted-foreground">
                 Your trusted pharmacy for all medical needs
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-4">Links</h3>
+              <h3 className="text-lg font-semibold mb-4 text-pharma-700 dark:text-pharma-300">Links</h3>
               <ul className="space-y-2">
                 <li><NavLink to="/" className="text-sm text-muted-foreground hover:text-pharma-700">Home</NavLink></li>
                 <li><NavLink to="/products" className="text-sm text-muted-foreground hover:text-pharma-700">Products</NavLink></li>
@@ -108,7 +136,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children }) => {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-4">Contact</h3>
+              <h3 className="text-lg font-semibold mb-4 text-pharma-700 dark:text-pharma-300">Contact</h3>
               <address className="not-italic text-sm text-muted-foreground">
                 <p>123 Pharmacy Street</p>
                 <p>Medicine City, MC 12345</p>
@@ -117,7 +145,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children }) => {
               </address>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-4">Hours</h3>
+              <h3 className="text-lg font-semibold mb-4 text-pharma-700 dark:text-pharma-300">Hours</h3>
               <p className="text-sm text-muted-foreground">
                 Monday - Friday: 9am - 9pm<br />
                 Saturday: 9am - 7pm<br />

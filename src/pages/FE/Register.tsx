@@ -1,14 +1,14 @@
 
 import React from 'react';
-import { LoginForm } from '@/components/auth/LoginForm';
+import { RegisterForm } from '@/components/auth/RegisterForm';
 import { NavLink } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
-const AdminLogin = () => {
+const Register = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-slate-100 to-blue-50 dark:from-gray-900 dark:to-gray-950">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-pharma-100/80 to-blue-100/80 dark:from-gray-900 dark:to-gray-950">
       <div 
-        className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(49,130,255,0.05),transparent_60%)]"
+        className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(49,130,255,0.1),transparent_60%)]"
         style={{ backgroundSize: '100% 100%', backgroundPosition: 'center center' }}
       />
       <div 
@@ -20,24 +20,33 @@ const AdminLogin = () => {
       />
       
       <div className="container relative z-10 flex flex-col items-center justify-center gap-6 px-4 py-10 md:gap-10">
-        <NavLink to="/" className="absolute top-8 left-8 text-slate-600 hover:text-slate-800 transition-colors flex items-center gap-2">
+        <NavLink to="/" className="absolute top-8 left-8 text-pharma-600 hover:text-pharma-700 transition-colors flex items-center gap-2">
           <ArrowLeft className="h-4 w-4" />
           <span>Back to Home</span>
         </NavLink>
         
         <div className="text-center space-y-2 mb-4">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Pharmacy Admin Dashboard
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-pharma-800 dark:text-pharma-100">
+            Join PharmaCare Today
           </h1>
           <p className="text-muted-foreground">
-            Sign in to access your pharmacy management system
+            Create an account to start managing your healthcare needs
           </p>
         </div>
         
-        <LoginForm className="md:min-w-96" isAdminLogin={true} />
+        <RegisterForm className="md:min-w-96" />
+        
+        <div className="text-center mt-4">
+          <p className="text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <NavLink to="/login" className="text-pharma-600 hover:text-pharma-700 underline underline-offset-4">
+              Sign in
+            </NavLink>
+          </p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default AdminLogin;
+export default Register;

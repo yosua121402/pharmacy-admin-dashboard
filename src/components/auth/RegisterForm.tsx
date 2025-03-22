@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Pill, ShieldCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Pill, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,27 +17,24 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface LoginFormProps {
+interface RegisterFormProps {
   className?: string;
-  isAdminLogin?: boolean;
 }
 
-export function LoginForm({ className, isAdminLogin = false }: LoginFormProps) {
+export function RegisterForm({ className }: RegisterFormProps) {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
-  const { login } = useAuth();
-
-  // Get the return URL from the location state or default to home
-  const from = (location.state as any)?.from?.pathname || (isAdminLogin ? '/admin' : '/');
+  const { register } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
       toast({
         title: "Error",
         description: "Please fill in all fields",
@@ -46,27 +43,36 @@ export function LoginForm({ className, isAdminLogin = false }: LoginFormProps) {
       return;
     }
     
+    if (password !== confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     try {
       setIsLoading(true);
-      const success = await login(email, password, isAdminLogin);
+      const success = await register(name, email, password);
       
       if (success) {
         toast({
           title: "Success",
-          description: "You have successfully logged in",
+          description: "Your account has been created successfully",
         });
-        navigate(from, { replace: true });
+        navigate('/login');
       } else {
         toast({
           title: "Error",
-          description: "Invalid email or password",
+          description: "Failed to create account",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
         title: "Error",
-        description: "An error occurred during login",
+        description: "An error occurred during registration",
         variant: "destructive",
       });
     } finally {
@@ -79,23 +85,29 @@ export function LoginForm({ className, isAdminLogin = false }: LoginFormProps) {
       <Card className="backdrop-blur-md bg-white/90 dark:bg-gray-950/90 border-t border-white/20 shadow-xl animate-scale-in">
         <CardHeader className="space-y-1 text-center">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-pharma-500">
-            {isAdminLogin ? (
-              <ShieldCheck className="h-6 w-6 text-white" />
-            ) : (
-              <Pill className="h-6 w-6 text-white" />
-            )}
+            <User className="h-6 w-6 text-white" />
           </div>
-          <CardTitle className="text-2xl font-bold">Sign in</CardTitle>
+          <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
           <CardDescription>
-            {isAdminLogin 
-              ? "Enter your credentials to access the admin dashboard" 
-              : "Enter your email and password to access your account"
-            }
+            Enter your information to create a PharmaCare account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={isLoading}
+                  required
+                  className="bg-white/50 dark:bg-gray-800/50"
+                />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -110,15 +122,7 @@ export function LoginForm({ className, isAdminLogin = false }: LoginFormProps) {
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="text-sm text-pharma-600 underline-offset-4 hover:underline"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -130,14 +134,22 @@ export function LoginForm({ className, isAdminLogin = false }: LoginFormProps) {
                   className="bg-white/50 dark:bg-gray-800/50"
                 />
               </div>
+              <div className="grid gap-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={isLoading}
+                  required
+                  className="bg-white/50 dark:bg-gray-800/50"
+                />
+              </div>
               <Button 
                 type="submit" 
-                className={cn(
-                  "w-full transition-all", 
-                  isAdminLogin 
-                    ? "bg-slate-800 hover:bg-slate-700" 
-                    : "bg-pharma-600 hover:bg-pharma-500"
-                )} 
+                className="w-full bg-pharma-600 hover:bg-pharma-500 transition-all" 
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -147,7 +159,7 @@ export function LoginForm({ className, isAdminLogin = false }: LoginFormProps) {
                     <div className="loading-dot"></div>
                   </div>
                 ) : (
-                  "Sign in"
+                  "Create Account"
                 )}
               </Button>
             </div>
@@ -155,9 +167,7 @@ export function LoginForm({ className, isAdminLogin = false }: LoginFormProps) {
         </CardContent>
         <CardFooter className="flex flex-col">
           <p className="mt-2 text-xs text-center text-muted-foreground">
-            <span>For demo, use:</span>
-            <br />
-            <span className="font-medium">{isAdminLogin ? "admin@example.com" : "user@example.com"} / password</span>
+            By creating an account, you agree to our Terms of Service and Privacy Policy
           </p>
         </CardFooter>
       </Card>
@@ -165,4 +175,4 @@ export function LoginForm({ className, isAdminLogin = false }: LoginFormProps) {
   );
 }
 
-export default LoginForm;
+export default RegisterForm;
