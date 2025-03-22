@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
@@ -36,42 +37,42 @@ interface SidebarNavItem {
 const mainNavItems: SidebarNavItem[] = [
   {
     title: 'Dashboard',
-    href: '/',
+    href: '/admin',
     icon: Home,
   },
   {
     title: 'Medicines',
-    href: '/medicines',
+    href: '/admin/medicines',
     icon: Pill,
   },
   {
     title: 'Orders',
-    href: '/orders',
+    href: '/admin/orders',
     icon: Box,
   },
   {
     title: 'Purchases',
-    href: '/purchases',
+    href: '/admin/purchases',
     icon: CreditCard,
   },
   {
     title: 'Customers',
-    href: '/customers',
+    href: '/admin/customers',
     icon: Users,
   },
   {
     title: 'Distributors',
-    href: '/distributors',
+    href: '/admin/distributors',
     icon: Truck,
   },
   {
     title: 'Reports',
-    href: '/reports',
+    href: '/admin/reports',
     icon: Activity,
   },
   {
     title: 'Calendar',
-    href: '/calendar',
+    href: '/admin/calendar',
     icon: Calendar,
   },
 ];
@@ -79,12 +80,12 @@ const mainNavItems: SidebarNavItem[] = [
 const secondaryNavItems: SidebarNavItem[] = [
   {
     title: 'Users',
-    href: '/users',
+    href: '/admin/users',
     icon: User,
   },
   {
     title: 'Settings',
-    href: '/settings',
+    href: '/admin/settings',
     icon: Settings,
   },
 ];

@@ -6,8 +6,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+
+// FE (User) Pages
+import Home from "./pages/FE/Home";
+import Products from "./pages/FE/Products";
+import Cart from "./pages/FE/Cart";
+import Contact from "./pages/FE/Contact";
+import Login from "./pages/FE/Login";
+
+// BE (Admin) Pages
+import AdminLogin from "./pages/BE/AdminLogin";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
 import Medicines from "./pages/Medicines";
 import Purchases from "./pages/Purchases";
 import Orders from "./pages/Orders";
@@ -29,12 +38,17 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            {/* Public routes */}
+            {/* FE (User) routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             
-            {/* Protected routes */}
+            {/* BE (Admin) routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route 
-              path="/" 
+              path="/admin" 
               element={
                 <ProtectedRoute>
                   <Index />
@@ -42,7 +56,7 @@ const App = () => (
               } 
             />
             <Route 
-              path="/medicines" 
+              path="/admin/medicines" 
               element={
                 <ProtectedRoute>
                   <Medicines />
@@ -50,7 +64,7 @@ const App = () => (
               } 
             />
             <Route 
-              path="/purchases" 
+              path="/admin/purchases" 
               element={
                 <ProtectedRoute>
                   <Purchases />
@@ -58,7 +72,7 @@ const App = () => (
               } 
             />
             <Route 
-              path="/orders" 
+              path="/admin/orders" 
               element={
                 <ProtectedRoute>
                   <Orders />
@@ -66,7 +80,7 @@ const App = () => (
               } 
             />
             <Route 
-              path="/customers" 
+              path="/admin/customers" 
               element={
                 <ProtectedRoute>
                   <Customers />
@@ -74,7 +88,7 @@ const App = () => (
               } 
             />
             <Route 
-              path="/distributors" 
+              path="/admin/distributors" 
               element={
                 <ProtectedRoute>
                   <Distributors />
@@ -82,7 +96,7 @@ const App = () => (
               } 
             />
             <Route 
-              path="/reports" 
+              path="/admin/reports" 
               element={
                 <ProtectedRoute>
                   <Reports />
@@ -90,7 +104,7 @@ const App = () => (
               } 
             />
             <Route 
-              path="/calendar" 
+              path="/admin/calendar" 
               element={
                 <ProtectedRoute>
                   <Calendar />
@@ -98,7 +112,7 @@ const App = () => (
               } 
             />
             <Route 
-              path="/users" 
+              path="/admin/users" 
               element={
                 <ProtectedRoute>
                   <Users />
@@ -106,16 +120,13 @@ const App = () => (
               } 
             />
             <Route 
-              path="/settings" 
+              path="/admin/settings" 
               element={
                 <ProtectedRoute>
                   <Settings />
                 </ProtectedRoute>
               } 
             />
-            
-            {/* Redirect from root to login */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
             
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />
