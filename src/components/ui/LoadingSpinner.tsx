@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LoadingSpinnerProps {
@@ -16,8 +15,9 @@ export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) 
   };
 
   return (
-    <div className={cn('animate-spin text-pharma-500', sizeClasses[size], className)}>
-      <Loader2 className="h-full w-full" />
+    <div className={cn('relative', sizeClasses[size], className)}>
+      <div className="absolute inset-0 rounded-full border-2 border-pharma-200 dark:border-gray-700"></div>
+      <div className="absolute inset-0 rounded-full border-t-2 border-pharma-500 animate-spin"></div>
     </div>
   );
 }
