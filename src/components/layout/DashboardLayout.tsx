@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
@@ -22,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -94,26 +94,22 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { logout } = useAuth();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
   const handleLogout = () => {
-    // In a real application, you would clear authentication tokens, user data, etc.
-    // For now, we'll just simulate a logout with a success message
+    logout();
     toast({
       title: "Logged out successfully",
       description: "You have been logged out of your account",
     });
-    
-    // Redirect to the login page
-    navigate('/login');
   };
 
   return (
     <div className="flex h-screen bg-background overflow-hidden">
-      {/* Sidebar Overlay (Mobile Only) */}
       {sidebarOpen && (
         <div 
           className="fixed inset-0 z-20 bg-black/50 lg:hidden" 
@@ -121,7 +117,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         />
       )}
 
-      {/* Sidebar */}
       <aside 
         className={cn(
           "fixed top-0 left-0 z-30 h-full w-64 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0",
@@ -129,7 +124,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         )}
       >
         <div className="flex h-full flex-col bg-white dark:bg-gray-900 shadow-lg">
-          {/* Sidebar Header */}
           <div className="flex h-16 items-center justify-between px-4">
             <div className="flex items-center">
               <span className="h-8 w-8 rounded-md bg-pharma-500 flex items-center justify-center">
@@ -149,7 +143,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           
           <Separator />
 
-          {/* Sidebar Content */}
           <ScrollArea className="flex-1 px-3 py-4">
             <nav className="flex flex-col gap-1">
               <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 px-2 mb-2">
@@ -202,7 +195,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             </nav>
           </ScrollArea>
 
-          {/* Sidebar Footer */}
           <div className="border-t p-4">
             <Button 
               variant="outline" 
@@ -216,9 +208,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Navigation Bar */}
         <header className="h-16 flex items-center justify-between border-b bg-white dark:bg-gray-900 px-4 lg:px-6">
           <Button
             variant="ghost"
@@ -261,7 +251,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           </div>
         </header>
 
-        {/* Page Content */}
         <div className="flex-1 overflow-y-auto p-6 animate-fade-in">
           {children}
         </div>
